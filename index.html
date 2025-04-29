@@ -1,0 +1,76 @@
+<!-- Homepage WineSol - Vendita Vino su Solana -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineSol - Vino su Solana</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f6f2; }
+        header { background: #7b2e2e; color: #fff; padding: 2rem 1rem; text-align: center; }
+        .catalogo { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin: 2rem 0; }
+        .vino { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 1rem; width: 250px; text-align: center; }
+        .vino img { width: 100%; border-radius: 8px; }
+        .compra-btn { background: #7b2e2e; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-top: 1rem; }
+        footer { background: #333; color: #fff; text-align: center; padding: 1rem; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>WineSol</h1>
+        <p>Acquista vino di qualità e paga in Solana!</p>
+    </header>
+    <section class="catalogo">
+        <div class="vino">
+            <img src="https://images.unsplash.com/photo-1514361892635-cebbf7dd0caa?auto=format&fit=crop&w=400&q=80" alt="Vino Rosso">
+            <h2>Vino Rosso</h2>
+            <p>Un rosso corposo, perfetto per ogni occasione.</p>
+            <p><strong>0.5 SOL</strong></p>
+            <button class="compra-btn">Compra con Solana</button>
+        </div>
+        <div class="vino">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Vino Bianco">
+            <h2>Vino Bianco</h2>
+            <p>Fresco e fruttato, ideale per l'estate.</p>
+            <p><strong>0.4 SOL</strong></p>
+            <button class="compra-btn">Compra con Solana</button>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 WineSol | Contatti: info@winesol.com</p>
+    </footer>
+    <!-- Solana Pay e QRCode -->
+    <div id="qrcode-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#0008;align-items:center;justify-content:center;z-index:1000;">
+      <div style="background:#fff;padding:2rem;border-radius:10px;text-align:center;">
+        <h3>Scansiona per pagare con Solana Pay</h3>
+        <canvas id="qrcode-canvas"></canvas>
+        <br>
+        <button onclick="document.getElementById('qrcode-modal').style.display='none'">Chiudi</button>
+      </div>
+    </div>
+    <script src="qrcode.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.compra-btn').forEach((btn, idx) => {
+            btn.onclick = async () => {
+                // Dati prodotto
+                let recipient = 'InserisciQuiIlTuoWalletSolana';
+                let amount = idx === 0 ? 0.5 : 0.4;
+                let label = encodeURIComponent(idx === 0 ? 'Vino Rosso' : 'Vino Bianco');
+                let message = encodeURIComponent('Acquisto da WineSol');
+                let url = `solana:${recipient}?amount=${amount}&label=${label}&message=${message}`;
+                // Controllo presenza QRCode
+                if (typeof QRCode === 'undefined') {
+                    alert('Errore: la libreria QRCode non è stata caricata.');
+                    return;
+                }
+                document.getElementById('qrcode-modal').style.display = 'flex';
+                QRCode.toCanvas(document.getElementById('qrcode-canvas'), url, { width: 256 }, function (error) {
+                    if (error) alert('Errore QR: ' + error);
+                });
+            };
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@solana/pay": "^0.2.5",
+    "qrcode": "^1.5.4"
+  }
+}
